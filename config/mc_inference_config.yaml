@@ -1,0 +1,43 @@
+# path to the checkpoint file containing the model
+model_path: PATH TO MODEL CHECKPOINT
+
+# model configuration
+model:
+  name: UNet3D
+  in_channels: 1
+  out_channels: 5    
+  layer_order: gcr
+  f_maps: [ 32, 64, 128, 256 ]
+  num_groups: 8
+  final_sigmoid: false    # softmax expected for multiclass
+  is_segmentation: true
+
+# predictor configuration
+predictor:
+  name: 'StandardPredictor'
+  save_segmentation: true  # keep this to get final segmentation (argmax)
+  # removed performance_metric
+  # removed gt_internal_path
+
+loaders:
+  batch_size: 1
+  num_workers: 8
+  raw_internal_path: raw   # added explicitly for clarity
+
+  test:
+    file_paths:
+      - PATH TO FILE THAT NEEDS SEGMENTING
+    slice_builder:
+      name: SliceBuilder
+      patch_shape: [ 256, 256, 256 ]
+      stride_shape: [ 64, 64, 64 ]
+      halo_shape: [ 16, 32, 32 ]
+
+    transformer:
+      raw:
+        - name: Standardize
+        - name: ToTensor
+          expand_dims: true
+
+# Optional: force GPU
+device: cuda
