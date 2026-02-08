@@ -1,0 +1,21 @@
+.idea
+.pytest_cache
+.ipynb_checkpoints
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+#MLflow logs
+mlruns/
+
+# Tensorboard logs
+logs/
+
+# PyTorch models
+*.pytorch
+
+# Python packages
+pytorch3dunet.egg-info/
+dist/
